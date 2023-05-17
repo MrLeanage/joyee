@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "145727739363",
+    "project_id": "joyee-da6af",
+    "storage_bucket": "joyee-da6af.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145727739363:android:bcc7c9b72ed56d4f18fcd6",
+        "android_client_info": {
+          "package_name": "com.app.joyee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145727739363-b33giuhbtrvh23msc767nfccjsgscuoc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiSKvvY6AZpUFYbifRV3smZHovJJpuz7c"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145727739363-b33giuhbtrvh23msc767nfccjsgscuoc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
