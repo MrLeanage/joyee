@@ -10,6 +10,8 @@ import 'package:joyee/utils/custom_widgets/toastMessage.dart';
 import 'package:joyee/utils/popups/dialogs.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
+import '../cuisine_manager/cusine_home.dart';
+
 class HomeScreen extends StatefulWidget {
   // int pageNumber = 0;
   //
@@ -59,6 +61,106 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 Container(
                   child: Text(
                     'Home',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // icon: Icon(Icons.home, color: Colors.white),
+          page: Home(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Container(
+            width: drawerItemWidth,
+            height: drawerItemHeight,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(drawerItemBorderRadius)),
+                color: Colors.black.withOpacity(drawerItemOpacity)
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.timelapse, color: Colors.white),
+                SizedBox(width: 10,),
+                Container(
+                  child: Text(
+                    'Tour Period Manager Plugin',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // icon: Icon(Icons.home, color: Colors.white),
+          page: Home(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Container(
+            width: drawerItemWidth,
+            height: drawerItemHeight,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(drawerItemBorderRadius)),
+                color: Colors.black.withOpacity(drawerItemOpacity)
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.fastfood_sharp, color: Colors.white),
+                SizedBox(width: 10,),
+                Container(
+                  child: Text(
+                    'Cuisine Discovery Manager Plugin',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // icon: Icon(Icons.home, color: Colors.white),
+          page: Cuisine_Home(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Container(
+            width: drawerItemWidth,
+            height: drawerItemHeight,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(drawerItemBorderRadius)),
+                color: Colors.black.withOpacity(drawerItemOpacity)
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.time_to_leave, color: Colors.white),
+                SizedBox(width: 10,),
+                Container(
+                  child: Text(
+                    'Travelling Mode Manager Plugin',
+                    style: TextStyle(color: Colors.white, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // icon: Icon(Icons.home, color: Colors.white),
+          page: Home(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Container(
+            width: drawerItemWidth,
+            height: drawerItemHeight,
+            padding: EdgeInsets.all(8),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(drawerItemBorderRadius)),
+                color: Colors.black.withOpacity(drawerItemOpacity)
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.verified_user, color: Colors.white),
+                SizedBox(width: 10,),
+                Container(
+                  child: Text(
+                    'User Experience Manager Plugin',
                     style: TextStyle(color: Colors.white, fontSize: 18),
                   ),
                 ),
