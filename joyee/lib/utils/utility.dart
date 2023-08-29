@@ -1,7 +1,3 @@
-
-
-
-
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
 import 'package:joyee/utils/constants.dart';
@@ -15,7 +11,6 @@ class Utility{
   Utility();
 
    static Future<bool> isConnectedToNetwork() async {
-    final message = 'You have no Internet';
     bool isConnectedToInternet = false;
 
     try {
@@ -134,4 +129,32 @@ class Utility{
       return true;
     }
   }
+
+  static Map<String, String> getDateAndTimeFromTimestamp(int timestamp) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+
+    String formattedDate = '${dateTime.year}-${_twoDigits(dateTime.month)}-${_twoDigits(dateTime.day)}';
+    String formattedTime = '${_twoDigits(dateTime.hour)}:${_twoDigits(dateTime.minute)}:${_twoDigits(dateTime.second)}';
+
+    return {
+      'date': formattedDate,
+      'time': formattedTime,
+    };
+  }
+
+  static String _twoDigits(int n) {
+    if (n >= 10) return '$n';
+    return '0$n';
+  }
+
+  static void showApiResponseErrorToast(){
+     ToastMessage.showErrorToast("Error Occurred while Retrieving Data. Please Try again");
+  }
+  
+  static void activateApiTimeout(){
+    Future.delayed(Duration(seconds: 20), () {
+      ToastMessage.showErrorToast('Network Connection Timeout reached 20s');
+    });
+  }
+
 }
