@@ -7,8 +7,6 @@ import 'package:joyee/utils/custom_widgets/appLoader.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 import 'package:rflutter_alert/rflutter_alert.dart';
 
-import '../../utils/custom_widgets/FormField.dart';
-
 class Cuisine_Home extends KFDrawerContent {
   Cuisine_Home({
     Key? key,
@@ -51,7 +49,9 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
     setState(() {
       isLoading = false;
       SmartDialog.dismiss();
-      alertMessage(responseLocalCuisine, size);
+      if(responseLocalCuisine.dataHeader.error){
+        alertMessage(responseLocalCuisine, size);
+      }
     });
   }
 
@@ -237,13 +237,13 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
                             style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
                           ),
 
-                          ElevatedButton(
-                            onPressed: () {
-                              alertMessage(new LocalCuisine(), size);
-                            },
-                            child: Text('Find Local Cuisine'),
-                            style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
-                          ),
+                          // ElevatedButton(
+                          //   onPressed: () {
+                          //     alertMessage(new LocalCuisine(), size);
+                          //   },
+                          //   child: Text('Find Local Cuisine'),
+                          //   style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
+                          // ),
                         ],
                       ),
 
@@ -255,87 +255,6 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
               ),
             ],
           ),
-        ],
-      ),
-    );
-  }
-
-  Widget listItem(String imgPath, String title){
-    return InkWell(
-      onTap: (){
-      },
-      child: Container(
-        width: 200,
-        padding: EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-            // border: Border.all(color: COLOR_BROWN),
-          color: Colors.grey[300]
-        ),
-        child: Column(
-          children: [
-            Container(
-              // color: Colors.white,
-              padding: EdgeInsets.all(5),
-              decoration: BoxDecoration(
-                color: Colors.amber[300],
-                borderRadius: BorderRadius.only(topRight: Radius.circular(10), topLeft : Radius.circular(10))
-              ),
-              child: Row(
-                children: [
-                  Text(
-                      title,
-                    style: TextStyle(
-                      fontSize: 19,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: 10,),
-            Container(
-              width: double.infinity,
-              height: 200,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10),
-                  image: DecorationImage(image: AssetImage(imgPath),
-                      fit: BoxFit.cover
-                  ),
-                )
-            )
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget listItemStats(String imgPath, String name, bool value){
-    return Container(
-      width: 150,
-      height: 150,
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(25),
-          color: value == true ? Colors.white : Color.fromRGBO(75, 97, 88, 1.0)
-      ),
-      child: Column(
-        children: <Widget>[
-          SizedBox(height: 15),
-          Image(image: AssetImage(imgPath),width: 45,height: 45, color: value == true ? Colors.black : Colors.white),
-          SizedBox(height: 15),
-          Text(name, style: TextStyle(fontSize: 13, color: value == true ? Colors.black : Colors.white)),
-          SizedBox(height: 5),
-          Switch(
-            value: value,
-            onChanged: (newVal){
-              setState(() {
-                value = newVal;
-                print(newVal);
-              });
-            },
-            activeColor: Colors.green,
-          )
         ],
       ),
     );
