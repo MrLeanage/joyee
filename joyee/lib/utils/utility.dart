@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:connectivity/connectivity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
 import 'package:joyee/utils/constants.dart';
 import 'package:joyee/utils/custom_widgets/toastMessage.dart';
 import 'package:intl/intl.dart';
@@ -7,6 +10,8 @@ import 'dart:io';
 import 'custom_widgets/snackBar_widget.dart';
 
 class Utility{
+
+  static Timer? apiTimeoutTimer;
 
   Utility();
 
@@ -130,8 +135,8 @@ class Utility{
     }
   }
 
-  static Map<String, String> getDateAndTimeFromTimestamp(int timestamp) {
-    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch(timestamp);
+  static Map<String, String> getDateAndTimeFromTimestamp(double timestamp) {
+    DateTime dateTime = DateTime.fromMillisecondsSinceEpoch((timestamp  * 1000).toInt());
 
     String formattedDate = '${dateTime.year}-${_twoDigits(dateTime.month)}-${_twoDigits(dateTime.day)}';
     String formattedTime = '${_twoDigits(dateTime.hour)}:${_twoDigits(dateTime.minute)}:${_twoDigits(dateTime.second)}';
@@ -150,11 +155,17 @@ class Utility{
   static void showApiResponseErrorToast(){
      ToastMessage.showErrorToast("Error Occurred while Retrieving Data. Please Try again");
   }
-  
-  static void activateApiTimeout(){
-    Future.delayed(Duration(seconds: 20), () {
-      ToastMessage.showErrorToast('Network Connection Timeout reached 20s');
+
+  static void activateApiTimeout() {
+    apiTimeoutTimer = Timer(Duration(seconds: 20), () {
+      SmartDialog.dismiss(); // Display error message here
+      showApiResponseErrorToast();
     });
+  }
+
+  static void cancelApiTimeout() {
+    apiTimeoutTimer?.cancel();
+    print('cancelled timeout');
   }
 
 }

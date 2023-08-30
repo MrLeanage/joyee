@@ -32,7 +32,6 @@ class LocalCuisineApiService{
       }else{
         ToastMessage.showErrorToast("Error Occurred while Retrieving  data. Please Try again");
       }
-
     } on Exception catch(ignoredException){
       ToastMessage.showErrorToast("Error Occurred while Retrieving data. Please Try again");
     }

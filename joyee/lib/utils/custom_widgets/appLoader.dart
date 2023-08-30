@@ -8,14 +8,15 @@ class AppLoader{
    static Container popupLoader(Size size){
     return Container(
       padding: EdgeInsets.all(16),
-      height: 280,
-      width: 220,
+      height: size.height * 0.5,
+      width: size.width * 0.75,
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
       ),
       alignment: Alignment.center,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -27,13 +28,18 @@ class AppLoader{
             ],
           ),
           Image.asset(APP_LOGO_COVER_PATH),
-          Text(
-            "HAPPY PET is analysing your pet'Data. Please wait!... ",
-            style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold
+          SizedBox(height: 20),
+          RichText(
+            maxLines: null,
+            textAlign: TextAlign.center,
+
+            text: TextSpan(
+              text: "JOYEE is analysing your Data. \n Please wait!... ",
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: size.width*0.05, color: COLOR_BLACK),
+
             ),
           ),
+
         ],
       ),
     );

@@ -4,6 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:joyee/screens/app_home/class_builder.dart';
 import 'package:joyee/screens/app_home/home.dart';
+import 'package:joyee/screens/feedback_manager/feedback_home.dart';
+import 'package:joyee/screens/period_manager/tour_period_home.dart';
+import 'package:joyee/screens/travel_manager/travel_mode_home.dart';
 import 'package:joyee/services/api_services/authenticate_service.dart';
 import 'package:joyee/utils/constants.dart';
 import 'package:joyee/utils/custom_widgets/toastMessage.dart';
@@ -93,7 +96,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           // icon: Icon(Icons.home, color: Colors.white),
-          page: Home(),
+          page: Tour_Period_Home(),
         ),
         KFDrawerItem.initWithPage(
           text: Container(
@@ -143,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           // icon: Icon(Icons.home, color: Colors.white),
-          page: Home(),
+          page: Travel_Mode_Home(),
         ),
         KFDrawerItem.initWithPage(
           text: Container(
@@ -168,7 +171,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
           ),
           // icon: Icon(Icons.home, color: Colors.white),
-          page: Home(),
+          page: Feedback_Home(),
         ),
       ],
 

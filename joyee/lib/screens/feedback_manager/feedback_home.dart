@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:joyee/model/local_cuisine.dart';
+import 'package:joyee/model/feedback_rating.dart';
+import 'package:joyee/services/api_services/feedback_rating_api_service.dart';
 import 'package:joyee/services/api_services/local_cuisine_api_service.dart';
 import 'package:joyee/utils/constants.dart';
 import 'package:joyee/utils/custom_widgets/appLoader.dart';
@@ -9,57 +10,50 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../utils/custom_widgets/FormField.dart';
 
-class Cuisine_Home extends KFDrawerContent {
-  Cuisine_Home({
+class Feedback_Home extends KFDrawerContent {
+  Feedback_Home({
     Key? key,
   });
 
   @override
-  _Cuisine_Home_State createState() => _Cuisine_Home_State();
+  _Feedback_Home_State createState() => _Feedback_Home_State();
 }
 
-class _Cuisine_Home_State extends State<Cuisine_Home> {
+class _Feedback_Home_State extends State<Feedback_Home> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   // Define TextEditingController for the text fields
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController countryController = TextEditingController();
+  final TextEditingController destinationHotelController = TextEditingController();
+  final TextEditingController feedbackHotelController = TextEditingController();
   bool isLoading = false;
 
-  bool spicyToggle = false;
-  bool tastyToggle = true;
-  bool sourToggle = false;
-  List<String> mealTypes = <String>['Breakfast', 'Lunch', 'Snack', 'Dinner'];
-  String selectedValue = '';
-
-  findLocalCuisine(Size size) async {
-
-    LocalCuisine localCuisine = new LocalCuisine();
-    localCuisine.spicy = spicyToggle;
-    localCuisine.tasty = tastyToggle;
-    localCuisine.sour = sourToggle;
-
+  generateFeedbackRating(Size size) async {
+    setState(() => isLoading = true);
     SmartDialog.showLoading(
         widget: AppLoader.popupLoader(size)
     );
+    FeedbackRating feedbackRating = new FeedbackRating();
+    feedbackRating.country = countryController.text;
+    feedbackRating.hotel_destination = destinationHotelController.text;
+    feedbackRating.feedback = feedbackHotelController.text;
 
-    setState(() => isLoading = true);
-    LocalCuisineApiService _apiService = new LocalCuisineApiService();
-    LocalCuisine responseLocalCuisine = await _apiService.getLocalCuisine(localCuisine);
-
+    FeedbackApiService _apiService = new FeedbackApiService();
+    FeedbackRating responseFeedbackRating = await _apiService.getFeedbackRating(feedbackRating);
 
     setState(() {
       isLoading = false;
       SmartDialog.dismiss();
-      alertMessage(responseLocalCuisine, size);
+      alertMessage(responseFeedbackRating, size);
     });
   }
 
-  void alertMessage(LocalCuisine responseLocalCuisine, Size size){
+  void alertMessage(FeedbackRating responseFeedbackRating, Size size){
     Alert(
         context: context,
-        title: "LOCAL CUISINE ANALYZER",
-        desc: 'We have analyzed your preferences and desired meal type. According to your selection, we found a cuisine named ' +responseLocalCuisine.meal + ' to try out',
+        title: "FEEDBACK ANALYZER",
+        desc: 'According to the feedback you have given for the ' +responseFeedbackRating.hotel_destination + ', we have analysed your all your emotions, thoughts from the text you provided as a feedback '
+            + '. Analysed matching rating for your feedback is : ' +  responseFeedbackRating.analyzed_rating.toString() + '/ 5.0  ',
         style: AlertStyle(
           titleStyle: TextStyle(color: COLOR_BLUE, fontSize: size.width*0.05),
           descStyle: TextStyle(color: COLOR_BLACK, fontSize:  size.width*0.04),
@@ -87,7 +81,6 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
 
   @override
   Widget build(BuildContext context) {
-    selectedValue = mealTypes.first;
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: ListView(
@@ -139,89 +132,61 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      Text("REGIONAL CUISINE DISCOVERY MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text("USER EXPERIENCE FEEDBACK MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
                       SizedBox(height: 25),
                       Container(
                         width: size.width,
                         padding: EdgeInsets.all(10),
                         color: Colors.amberAccent,
-                        child: Text("Try out Yummy local food choices just for you!!"
+                        child: Text("Transforming Feedback into Ratings: Your Voice, Your Ratings!"
                           , style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
-                            fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold
                           ),),
                       ),
                       SizedBox(height: 10),
                       Container(
                         padding: EdgeInsets.all(10),
                         color: TEXT_BACKGROUND_COLOR,
-                        child: Text("Discover the perfect culinary adventure for your taste buds with our curated selection of exquisite regional cuisines. From tantalizing flavors to authentic traditions, our mobile app helps you explore and savor the best in food culture Sri Lanka."
+                        child: Text("Text Insights Transformed: Unleash the Potential of Feedback Analysis! Our specialized plugin delves deep into textual feedback, unraveling sentiments and opinions to generate insightful ratings. Elevate your user engagement by harnessing the power of text analysis, converting words into valuable ratings that drive informed decisions. Let expressions shape the success of your venture!"
                           , style: TextStyle(
                               color: Colors.black,
                               fontSize: 16
                           ),),
                       ),
                       SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text('Do you want to try Spicy Local Cuisine? :    '),
-                          Switch(
-                            value: spicyToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                spicyToggle = newValue;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Do you consider taste of Local Cuisine? :   '),
-                          Switch(
-                            value: tastyToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                tastyToggle = newValue;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Would you like to try sour Local Cuisine? :  ' ),
-                          Switch(
-                            value: sourToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                sourToggle = newValue;
-                              });
-                            },
-                          ),
-                        ],
+                      TextFormField(
+                        controller: countryController,
+                        decoration: customInputDecoration('Enter Country :', size, null),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your Country!';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text('Select Your Preferred Meal Type :'),
-                          SizedBox(width: 10),
-                          DropdownButton<String>(
-                            value: selectedValue,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedValue = newValue!;
-                              });
-                            },
-                            items: mealTypes.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ],
+                      TextFormField(
+                        controller: destinationHotelController,
+                        decoration: customInputDecoration( 'Enter Your Destination Hotel :', size, null),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please end Your Destination hotel!';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 10),
+                      TextFormField(
+                        controller: feedbackHotelController,
+                        decoration: customInputDecoration( 'Enter Feedback :', size, null),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please add your Feedback for provided Hotel !';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 20),
                       Row(
@@ -230,18 +195,19 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
                           ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                               findLocalCuisine(size);
+                                generateFeedbackRating(size);
                               }
                             },
-                            child: Text('Find Local Cuisine'),
+                            child: Text('Generate Feedback rating'),
                             style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
                           ),
-
+                          SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () {
-                              alertMessage(new LocalCuisine(), size);
+                              countryController.clear();
+                              destinationHotelController.clear();
                             },
-                            child: Text('Find Local Cuisine'),
+                            child: Text('Clear'),
                             style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
                           ),
                         ],

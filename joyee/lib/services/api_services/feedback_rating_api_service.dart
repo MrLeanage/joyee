@@ -6,7 +6,7 @@ import 'package:joyee/utils/utility.dart';
 
 import '../../utils/custom_widgets/toastMessage.dart';
 
-class TravelModeApiService{
+class FeedbackApiService{
   static final String _feedbackRatingServerName = 'it19099200';
 
   Future<FeedbackRating> getFeedbackRating(FeedbackRating feedbackRating) async {

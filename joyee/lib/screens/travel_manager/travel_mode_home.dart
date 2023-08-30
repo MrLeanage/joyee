@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:joyee/model/local_cuisine.dart';
+import 'package:joyee/model/tour_period.dart';
+import 'package:joyee/model/travel_mode.dart';
+import 'package:joyee/services/api_services/feedback_rating_api_service.dart';
 import 'package:joyee/services/api_services/local_cuisine_api_service.dart';
+import 'package:joyee/services/api_services/tour_period_api_service.dart';
+import 'package:joyee/services/api_services/travel_mode_api_service.dart';
 import 'package:joyee/utils/constants.dart';
 import 'package:joyee/utils/custom_widgets/appLoader.dart';
 import 'package:kf_drawer/kf_drawer.dart';
@@ -9,57 +13,47 @@ import 'package:rflutter_alert/rflutter_alert.dart';
 
 import '../../utils/custom_widgets/FormField.dart';
 
-class Cuisine_Home extends KFDrawerContent {
-  Cuisine_Home({
+class Travel_Mode_Home extends KFDrawerContent {
+  Travel_Mode_Home({
     Key? key,
   });
 
   @override
-  _Cuisine_Home_State createState() => _Cuisine_Home_State();
+  _Travel_Mode_Home_State createState() => _Travel_Mode_Home_State();
 }
 
-class _Cuisine_Home_State extends State<Cuisine_Home> {
+class _Travel_Mode_Home_State extends State<Travel_Mode_Home> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   // Define TextEditingController for the text fields
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
+  final TextEditingController startDestinationController = TextEditingController();
+  final TextEditingController endDestinationController = TextEditingController();
   bool isLoading = false;
 
-  bool spicyToggle = false;
-  bool tastyToggle = true;
-  bool sourToggle = false;
-  List<String> mealTypes = <String>['Breakfast', 'Lunch', 'Snack', 'Dinner'];
-  String selectedValue = '';
-
-  findLocalCuisine(Size size) async {
-
-    LocalCuisine localCuisine = new LocalCuisine();
-    localCuisine.spicy = spicyToggle;
-    localCuisine.tasty = tastyToggle;
-    localCuisine.sour = sourToggle;
-
+  findTourPeriod(Size size) async {
+    setState(() => isLoading = true);
     SmartDialog.showLoading(
         widget: AppLoader.popupLoader(size)
     );
+    TravelMode travelMode = new TravelMode();
+    travelMode.startDestination = startDestinationController.text;
+    travelMode.endDestination = endDestinationController.text;
 
-    setState(() => isLoading = true);
-    LocalCuisineApiService _apiService = new LocalCuisineApiService();
-    LocalCuisine responseLocalCuisine = await _apiService.getLocalCuisine(localCuisine);
-
+    TravelModeApiService _apiService = new TravelModeApiService();
+    TravelMode responseTourMode = await _apiService.getTravelMode(travelMode);
 
     setState(() {
       isLoading = false;
       SmartDialog.dismiss();
-      alertMessage(responseLocalCuisine, size);
+      alertMessage(responseTourMode, size);
     });
   }
 
-  void alertMessage(LocalCuisine responseLocalCuisine, Size size){
+  void alertMessage(TravelMode responseTourMode, Size size){
     Alert(
         context: context,
-        title: "LOCAL CUISINE ANALYZER",
-        desc: 'We have analyzed your preferences and desired meal type. According to your selection, we found a cuisine named ' +responseLocalCuisine.meal + ' to try out',
+        title: "TRAVEL MODE ANALYZER",
+        desc: 'Many of visitors has preferred ' +responseTourMode.mode + ' as their transportation mode for visit ' + responseTourMode.endDestination + ' from ' + responseTourMode.startDestination,
         style: AlertStyle(
           titleStyle: TextStyle(color: COLOR_BLUE, fontSize: size.width*0.05),
           descStyle: TextStyle(color: COLOR_BLACK, fontSize:  size.width*0.04),
@@ -87,7 +81,6 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
 
   @override
   Widget build(BuildContext context) {
-    selectedValue = mealTypes.first;
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
       child: ListView(
@@ -139,89 +132,50 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
                         ],
                       ),
                       SizedBox(height: 30),
-                      Text("REGIONAL CUISINE DISCOVERY MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
+                      Text("TRAVELING MODE MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
                       SizedBox(height: 25),
                       Container(
                         width: size.width,
                         padding: EdgeInsets.all(10),
                         color: Colors.amberAccent,
-                        child: Text("Try out Yummy local food choices just for you!!"
+                        child: Text("Explore the best ways to travel around Sri Lanka"
                           , style: TextStyle(
                               color: Colors.black,
                               fontSize: 16,
-                            fontWeight: FontWeight.bold
+                              fontWeight: FontWeight.bold
                           ),),
                       ),
                       SizedBox(height: 10),
                       Container(
                         padding: EdgeInsets.all(10),
                         color: TEXT_BACKGROUND_COLOR,
-                        child: Text("Discover the perfect culinary adventure for your taste buds with our curated selection of exquisite regional cuisines. From tantalizing flavors to authentic traditions, our mobile app helps you explore and savor the best in food culture Sri Lanka."
+                        child: Text("Discover the ideal way to traverse Sri Lanka's enchanting landscapes. Embrace the scenic charm aboard iconic blue trains, unwind in budget-friendly buses, or relish personalized taxi journeys. For immersive experiences, opt for tuk-tuks or cycling through bustling streets. With diverse options that blend tradition and modernity, uncover the beauty and culture of Sri Lanka through its vibrant transportation modes."
                           , style: TextStyle(
                               color: Colors.black,
                               fontSize: 16
                           ),),
                       ),
                       SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text('Do you want to try Spicy Local Cuisine? :    '),
-                          Switch(
-                            value: spicyToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                spicyToggle = newValue;
-                              });
-                            },
-                          ),
-                        ],
+                      TextFormField(
+                        controller: startDestinationController,
+                        decoration: customInputDecoration('Enter Start Destination :', size, null),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Your Start Destination!';
+                          }
+                          return null;
+                        },
                       ),
-                      Row(
-                        children: [
-                          Text('Do you consider taste of Local Cuisine? :   '),
-                          Switch(
-                            value: tastyToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                tastyToggle = newValue;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Would you like to try sour Local Cuisine? :  ' ),
-                          Switch(
-                            value: sourToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                sourToggle = newValue;
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text('Select Your Preferred Meal Type :'),
-                          SizedBox(width: 10),
-                          DropdownButton<String>(
-                            value: selectedValue,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedValue = newValue!;
-                              });
-                            },
-                            items: mealTypes.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        ],
+                      SizedBox(height: 20),
+                      TextFormField(
+                        controller: endDestinationController,
+                        decoration: customInputDecoration('Enter End Destination :', size, null),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please Your End Destination!';
+                          }
+                          return null;
+                        },
                       ),
                       SizedBox(height: 20),
                       Row(
@@ -230,18 +184,18 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
                           ElevatedButton(
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                               findLocalCuisine(size);
+                               findTourPeriod(size);
                               }
                             },
-                            child: Text('Find Local Cuisine'),
+                            child: Text('Find Preferred Travel Mode'),
                             style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
                           ),
-
+                          SizedBox(width: 10),
                           ElevatedButton(
                             onPressed: () {
-                              alertMessage(new LocalCuisine(), size);
+                              startDestinationController.clear();
                             },
-                            child: Text('Find Local Cuisine'),
+                            child: Text('Clear'),
                             style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
                           ),
                         ],

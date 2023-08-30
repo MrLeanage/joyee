@@ -1,3 +1,5 @@
+import 'package:joyee/utils/custom_widgets/toastMessage.dart';
+
 import '../utils/utility.dart';
 
 class DataHeader{
@@ -10,14 +12,19 @@ class DataHeader{
 
   DataHeader();
   DataHeader.fromJsonApi(var json){
+    print('error value : '+ json['error'].toString());
     this._error = json['error'];
     var dateTime = Utility.getDateAndTimeFromTimestamp(json['time-stamp']);
     this._time = dateTime['time']!;
     this._date =  dateTime['date']!;
-    this._status =  json['time-stamp'];
+    this._status =  json['status'];
+    if(this._error){
+      this._errorMessage = json['error-message'];
+      ToastMessage.showErrorToast("Error Occurred While Retrieving data!");
+    }
 
-    if(!dataValidity()){
-      Utility.showApiResponseErrorToast();
+    if(dataValidity()){
+      Utility.cancelApiTimeout();
     }
   }
 

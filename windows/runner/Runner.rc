@@ -90,7 +90,7 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.app" "\0"
-            VALUE "FileDescription", "HAPPY PET MOBILE " "\0"
+            VALUE "FileDescription", "JOYEE MOBILE " "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "joyee" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.app. All rights reserved." "\0"

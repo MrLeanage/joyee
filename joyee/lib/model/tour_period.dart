@@ -5,6 +5,7 @@ import 'data_header.dart';
 
 class TourPeriod{
   String _country = '';
+  String _month = '';
 
   //for network data handling
   DataHeader _dataHeader = new DataHeader();
@@ -15,7 +16,15 @@ class TourPeriod{
     this._dataHeader = DataHeader.fromJsonApi(json);
     if(this._dataHeader.dataValidity()){
       this._country = json['data']['country'];
+      this._month = json['data']['month'];
     }
+  }
+
+
+  String get month => _month;
+
+  set month(String value) {
+    _month = value;
   }
 
   Map<String, dynamic> getApiMapper() => {
