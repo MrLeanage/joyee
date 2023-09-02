@@ -16,10 +16,11 @@ class FeedbackRating{
   FeedbackRating.fromJsonApi(var json){
     this._dataHeader = DataHeader.fromJsonApi(json);
     if(this._dataHeader.dataValidity()){
-      this._feedback = json['feedback'];
-      this._country = json['country'];
-      this._hotel_destination = json['hotel-destination'];
-      this._analyzed_rating = json['rating'];
+      this._feedback = json['data']['feedback'];
+      this._country = json['data']['country'];
+      this._hotel_destination = json['data']['hotel-destination'];
+      this._analyzed_rating = json['data']['rating'];
+      print('model rate :' + json['data']['rating'].toString());
     }
   }
 

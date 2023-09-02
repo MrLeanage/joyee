@@ -26,6 +26,7 @@ class _Feedback_Home_State extends State<Feedback_Home> {
   final TextEditingController destinationHotelController = TextEditingController();
   final TextEditingController feedbackHotelController = TextEditingController();
   bool isLoading = false;
+  var responseFeedbackRating = new FeedbackRating();
 
   generateFeedbackRating(Size size) async {
     setState(() => isLoading = true);
@@ -38,15 +39,20 @@ class _Feedback_Home_State extends State<Feedback_Home> {
     feedbackRating.feedback = feedbackHotelController.text;
 
     FeedbackApiService _apiService = new FeedbackApiService();
-    FeedbackRating responseFeedbackRating = await _apiService.getFeedbackRating(feedbackRating);
 
+    responseFeedbackRating = await _apiService.getFeedbackRating(feedbackRating).whenComplete(() =>
     setState(() {
       isLoading = false;
       SmartDialog.dismiss();
-      if(responseFeedbackRating.dataHeader.error){
+      print('error : '+ responseFeedbackRating.dataHeader.error.toString());
+      if(!responseFeedbackRating.dataHeader.error){
+        print('rate :' + responseFeedbackRating.analyzed_rating.toString());
         alertMessage(responseFeedbackRating, size);
       }
-    });
+    })
+    );
+
+
   }
 
   void alertMessage(FeedbackRating responseFeedbackRating, Size size){
