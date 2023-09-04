@@ -19,16 +19,15 @@ class Cuisine_Home extends KFDrawerContent {
 class _Cuisine_Home_State extends State<Cuisine_Home> {
   final GlobalKey<FormState> _formKey = GlobalKey();
 
-  // Define TextEditingController for the text fields
-  final TextEditingController firstNameController = TextEditingController();
-  final TextEditingController lastNameController = TextEditingController();
   bool isLoading = false;
 
   bool spicyToggle = false;
   bool tastyToggle = true;
   bool sourToggle = false;
   List<String> mealTypes = <String>['Breakfast', 'Lunch', 'Snack', 'Dinner'];
-  String selectedValue = '';
+  List<String> regionList = <String>['Western Province', 'North Central Province', 'Uva Province', 'Northern Province', 'Central Province', 'North Western Province', 'Sabaragamuwa Province', 'Eastern Province', 'Southern Province'];
+  String selectedMealTypeValue = '';
+  String selectedRegionValue = '';
 
   findLocalCuisine(Size size) async {
 
@@ -36,6 +35,8 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
     localCuisine.spicy = spicyToggle;
     localCuisine.tasty = tastyToggle;
     localCuisine.sour = sourToggle;
+    localCuisine.meal_type = selectedMealTypeValue;
+    localCuisine.region = selectedRegionValue;
 
     SmartDialog.showLoading(
         widget: AppLoader.popupLoader(size)
@@ -49,17 +50,18 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
     setState(() {
       isLoading = false;
       SmartDialog.dismiss();
-      if(responseLocalCuisine.dataHeader.error){
+      if(responseLocalCuisine.dataHeader.dataValidity()){
         alertMessage(responseLocalCuisine, size);
       }
     });
   }
 
   void alertMessage(LocalCuisine responseLocalCuisine, Size size){
+    print('Note :' + responseLocalCuisine.note);
     Alert(
         context: context,
         title: "LOCAL CUISINE ANALYZER",
-        desc: 'We have analyzed your preferences and desired meal type. According to your selection, we found a cuisine named ' +responseLocalCuisine.meal + ' to try out',
+        desc: responseLocalCuisine.note,
         style: AlertStyle(
           titleStyle: TextStyle(color: COLOR_BLUE, fontSize: size.width*0.05),
           descStyle: TextStyle(color: COLOR_BLACK, fontSize:  size.width*0.04),
@@ -87,174 +89,216 @@ class _Cuisine_Home_State extends State<Cuisine_Home> {
 
   @override
   Widget build(BuildContext context) {
-    selectedValue = mealTypes.first;
+    selectedMealTypeValue = mealTypes.first;
+    selectedRegionValue = regionList.first;
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(APP_BACKGROUND_2_PATH), // Replace with your background image path
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          ListView(
+          children: <Widget>[
+            Column(
+              mainAxisSize: MainAxisSize.min, // Make the Column take up minimum vertical space
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                      child: Material(
+                        shadowColor: Colors.transparent,
+                        color: Colors.transparent,
+                        child: IconButton(
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.black,
+                          ),
+                          onPressed: widget.onMenuPressed,
                         ),
-                        onPressed: widget.onMenuPressed,
                       ),
                     ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: AssetImage(APP_AVATAR_PATH),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(width: 15)
-                ],
-              ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Row(
+                    Spacer(),
+                    Container(
+                      height: 40,
+                      width: 40,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                              image: AssetImage(APP_AVATAR_PATH),
+                              fit: BoxFit.cover)),
+                    ),
+                    SizedBox(width: 15)
+                  ],
+                ),
+                Padding(
+                    padding: EdgeInsets.all(15),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
-                          Image.asset(
-                            APP_LOGO_COVER_PATH,
-                            width: size.width * 0.90,
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      Text("REGIONAL CUISINE DISCOVERY MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
-                      SizedBox(height: 25),
-                      Container(
-                        width: size.width,
-                        padding: EdgeInsets.all(10),
-                        color: Colors.amberAccent,
-                        child: Text("Try out Yummy local food choices just for you!!"
-                          , style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                            fontWeight: FontWeight.bold
-                          ),),
-                      ),
-                      SizedBox(height: 10),
-                      Container(
-                        padding: EdgeInsets.all(10),
-                        color: TEXT_BACKGROUND_COLOR,
-                        child: Text("Discover the perfect culinary adventure for your taste buds with our curated selection of exquisite regional cuisines. From tantalizing flavors to authentic traditions, our mobile app helps you explore and savor the best in food culture Sri Lanka."
-                          , style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16
-                          ),),
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        children: [
-                          Text('Do you want to try Spicy Local Cuisine? :    '),
-                          Switch(
-                            value: spicyToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                spicyToggle = newValue;
-                              });
-                            },
+                          Row(
+                            children: <Widget>[
+                              Image.asset(
+                                APP_LOGO_COVER_PATH,
+                                width: size.width * 0.90,
+                              )
+                            ],
                           ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Do you consider taste of Local Cuisine? :   '),
-                          Switch(
-                            value: tastyToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                tastyToggle = newValue;
-                              });
-                            },
+                          SizedBox(height: 30),
+                          Text("REGIONAL CUISINE DISCOVERY MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
+                          SizedBox(height: 25),
+                          Container(
+                            width: size.width,
+                            padding: EdgeInsets.all(10),
+                            color: Colors.amberAccent,
+                            child: Text("Try out Yummy local food choices just for you!!"
+                              , style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold
+                              ),),
                           ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Text('Would you like to try sour Local Cuisine? :  ' ),
-                          Switch(
-                            value: sourToggle,
-                            onChanged: (newValue) {
-                              setState(() {
-                                sourToggle = newValue;
-                              });
-                            },
+                          SizedBox(height: 10),
+                          Container(
+                            padding: EdgeInsets.all(10),
+                            color: TEXT_BACKGROUND_COLOR,
+                            child: Text("Discover the perfect culinary adventure for your taste buds with our curated selection of exquisite regional cuisines. From tantalizing flavors to authentic traditions, our mobile app helps you explore and savor the best in food culture Sri Lanka."
+                              , style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16
+                              ),),
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 10),
-                      Row(
-                        children: [
-                          Text('Select Your Preferred Meal Type :'),
-                          SizedBox(width: 10),
-                          DropdownButton<String>(
-                            value: selectedValue,
-                            onChanged: (newValue) {
-                              setState(() {
-                                selectedValue = newValue!;
-                              });
-                            },
-                            items: mealTypes.map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
+                          SizedBox(height: 20),
+                          Row(
+                            children: [
+                              Expanded(child: Text('Select Your Journey Province :')),
+                              // SizedBox(width: 10),
+                              DropdownButton<String>(
+                                value: selectedRegionValue,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    selectedRegionValue = newValue!;
+                                  });
+                                },
+                                items: regionList.map<DropdownMenuItem<String>>((String value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList(),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                               findLocalCuisine(size);
-                              }
-                            },
-                            child: Text('Find Local Cuisine'),
-                            style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
+                          SizedBox(height: 20),
+                          Row(
+
+                            children: [
+                              Expanded(child: Text('Do you want to try Spicy Local Cuisine? :    ')),
+                              Switch(
+                                value: spicyToggle,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    spicyToggle = newValue;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: Text('Do you consider taste of Local Cuisine? :   '),),
+                              Switch(
+                                value: tastyToggle,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    tastyToggle = newValue;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            children: [
+                              Expanded(child: Text('Would you like to try sour Local Cuisine? :  ' )),
+                              Switch(
+                                value: sourToggle,
+                                onChanged: (newValue) {
+                                  setState(() {
+                                    sourToggle = newValue;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Expanded(child: Text('Select Your Preferred Meal Type :')),
+                              SizedBox(width: 10),
+                             Container(
+                               width: size.width * 0.39,
+                               child:
+                                DropdownButton<String>(
+                                  isExpanded: true,
+                                 value: selectedMealTypeValue,
+                                 onChanged: (newValue) {
+                                   setState(() {
+                                     selectedMealTypeValue = newValue!;
+                                   });
+                                 },
+                                 items: mealTypes.map<DropdownMenuItem<String>>((String value) {
+                                   return DropdownMenuItem<String>(
+                                     value: value,
+                                     child: Text(value),
+                                   );
+                                 }).toList(),
+                               ),
+                             )
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_formKey.currentState!.validate()) {
+                                    findLocalCuisine(size);
+                                  }
+                                },
+                                child: Text('Find Local Cuisine'),
+                                style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
+                              ),
+
+                              // ElevatedButton(
+                              //   onPressed: () {
+                              //     alertMessage(new LocalCuisine(), size);
+                              //   },
+                              //   child: Text('Find Local Cuisine'),
+                              //   style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
+                              // ),
+                            ],
                           ),
 
-                          // ElevatedButton(
-                          //   onPressed: () {
-                          //     alertMessage(new LocalCuisine(), size);
-                          //   },
-                          //   child: Text('Find Local Cuisine'),
-                          //   style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
-                          // ),
+                          // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
                         ],
                       ),
 
-                      // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
-                    ],
-                  ),
-
-                )
-              ),
-            ],
-          ),
+                    )
+                ),
+              ],
+            ),
+          ],
+        ),
         ],
       ),
     );

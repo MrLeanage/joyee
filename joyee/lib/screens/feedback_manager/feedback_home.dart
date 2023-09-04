@@ -90,141 +90,153 @@ class _Feedback_Home_State extends State<Feedback_Home> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                        ),
-                        onPressed: widget.onMenuPressed,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: AssetImage(APP_AVATAR_PATH),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(width: 15)
-                ],
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(APP_BACKGROUND_2_PATH), // Replace with your background image path
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          ListView(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Image.asset(
-                            APP_LOGO_COVER_PATH,
-                            width: size.width * 0.90,
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      Text("USER EXPERIENCE FEEDBACK MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
-                      SizedBox(height: 25),
-                      Container(
-                        width: size.width,
-                        padding: EdgeInsets.all(10),
-                        color: Colors.amberAccent,
-                        child: Text("Transforming Feedback into Ratings: Your Voice, Your Ratings!"
-                          , style: TextStyle(
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                        child: Material(
+                          shadowColor: Colors.transparent,
+                          color: Colors.transparent,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.menu,
                               color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold
-                          ),),
+                            ),
+                            onPressed: widget.onMenuPressed,
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 10),
+                      Spacer(),
                       Container(
-                        padding: EdgeInsets.all(10),
-                        color: TEXT_BACKGROUND_COLOR,
-                        child: Text("Text Insights Transformed: Unleash the Potential of Feedback Analysis! Our specialized plugin delves deep into textual feedback, unraveling sentiments and opinions to generate insightful ratings. Elevate your user engagement by harnessing the power of text analysis, converting words into valuable ratings that drive informed decisions. Let expressions shape the success of your venture!"
-                          , style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16
-                          ),),
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                                image: AssetImage(APP_AVATAR_PATH),
+                                fit: BoxFit.cover)),
                       ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: countryController,
-                        decoration: customInputDecoration('Enter Country :', size, null),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please enter your Country!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: destinationHotelController,
-                        decoration: customInputDecoration( 'Enter Your Destination Hotel :', size, null),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please end Your Destination hotel!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 10),
-                      TextFormField(
-                        controller: feedbackHotelController,
-                        decoration: customInputDecoration( 'Enter Feedback :', size, null),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please add your Feedback for provided Hotel !';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                                generateFeedbackRating(size);
-                              }
-                            },
-                            child: Text('Generate Feedback rating'),
-                            style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
-                          ),
-                          SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              countryController.clear();
-                              destinationHotelController.clear();
-                            },
-                            child: Text('Clear'),
-                            style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
-                          ),
-                        ],
-                      ),
-
-                      // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 15)
                     ],
                   ),
+                  Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  APP_LOGO_COVER_PATH,
+                                  width: size.width * 0.90,
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            Text("USER EXPERIENCE FEEDBACK MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
+                            SizedBox(height: 25),
+                            Container(
+                              width: size.width,
+                              padding: EdgeInsets.all(10),
+                              color: Colors.amberAccent,
+                              child: Text("Transforming Feedback into Ratings: Your Voice, Your Ratings!"
+                                , style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
+                                ),),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              color: TEXT_BACKGROUND_COLOR,
+                              child: Text("Text Insights Transformed: Unleash the Potential of Feedback Analysis! Our specialized plugin delves deep into textual feedback, unraveling sentiments and opinions to generate insightful ratings. Elevate your user engagement by harnessing the power of text analysis, converting words into valuable ratings that drive informed decisions. Let expressions shape the success of your venture!"
+                                , style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16
+                                ),),
+                            ),
+                            SizedBox(height: 20),
+                            TextFormField(
+                              controller: countryController,
+                              decoration: customInputDecoration('Enter Country :', size, null),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter your Country!';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              controller: destinationHotelController,
+                              decoration: customInputDecoration( 'Enter Your Destination Hotel :', size, null),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please end Your Destination hotel!';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 10),
+                            TextFormField(
+                              controller: feedbackHotelController,
+                              decoration: customInputDecoration( 'Enter Feedback :', size, null),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please add your Feedback for provided Hotel !';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      generateFeedbackRating(size);
+                                    }
+                                  },
+                                  child: Text('Generate Feedback rating'),
+                                  style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    countryController.clear();
+                                    destinationHotelController.clear();
+                                  },
+                                  child: Text('Clear'),
+                                  style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
+                                ),
+                              ],
+                            ),
 
-                )
+                            // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+
+                      )
+                  ),
+                ],
               ),
             ],
           ),

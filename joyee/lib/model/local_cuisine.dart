@@ -7,6 +7,8 @@ class LocalCuisine{
   bool _sour = false;
   String _meal_type = '';
   String _meal = '';
+  String _note = '';
+  String _region = '';
   //for network data handling
   DataHeader _dataHeader = new DataHeader();
 
@@ -20,6 +22,8 @@ class LocalCuisine{
       this._sour = json['data']['sour'];
       this._meal_type = json['data']['meal-type'];
       this._meal = json['data']['meal'];
+      this._note = json['data']['note'];
+      this._region = json['data']['region'];
     }
   }
 
@@ -28,6 +32,7 @@ class LocalCuisine{
     "tasty": tasty,
     "sour": sour,
     "meal-type": meal_type,
+    "region": region,
   };
 
   DataHeader get dataHeader => _dataHeader;
@@ -58,5 +63,17 @@ class LocalCuisine{
 
   set spicy(bool value) {
     _spicy = value;
+  }
+
+  String get note => _note;
+
+  set note(String value) {
+    _note = value;
+  }
+
+  String get region => _region;
+
+  set region(String value) {
+    _region = value;
   }
 }

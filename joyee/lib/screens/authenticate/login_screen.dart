@@ -105,7 +105,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   color: Colors.white.withOpacity(0.9),
                   child: Container(
-
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      image: DecorationImage(
+                        image: AssetImage(APP_BACKGROUND_2_PATH), // Replace with your background image path
+                        fit: BoxFit.fill,
+                      ),
+                    ),
                     height: 400,
                     width: 300,
                     padding: EdgeInsets.all(16),

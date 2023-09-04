@@ -15,6 +15,7 @@ class LocalCuisineApiService{
     
     //encode Map to JSON
     Map data = localCuisine.getApiMapper();
+    print(localCuisine.getApiMapper());
     //encode Map to JSON
     var body = json.encode(data);
 

@@ -41,7 +41,7 @@ class _Travel_Mode_Home_State extends State<Travel_Mode_Home> {
     setState(() {
       isLoading = false;
       SmartDialog.dismiss();
-      if(responseTourMode.dataHeader.error){
+      if(responseTourMode.dataHeader.dataValidity()){
         alertMessage(responseTourMode, size);
       }
     });
@@ -81,129 +81,141 @@ class _Travel_Mode_Home_State extends State<Travel_Mode_Home> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                        ),
-                        onPressed: widget.onMenuPressed,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: AssetImage(APP_AVATAR_PATH),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(width: 15)
-                ],
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(APP_BACKGROUND_2_PATH), // Replace with your background image path
+                fit: BoxFit.cover,
               ),
-              Padding(
-                padding: EdgeInsets.all(15),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+            ),
+          ),
+          ListView(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Row(
                     children: <Widget>[
-                      Row(
-                        children: <Widget>[
-                          Image.asset(
-                            APP_LOGO_COVER_PATH,
-                            width: size.width * 0.90,
-                          )
-                        ],
-                      ),
-                      SizedBox(height: 30),
-                      Text("TRAVELING MODE MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
-                      SizedBox(height: 25),
-                      Container(
-                        width: size.width,
-                        padding: EdgeInsets.all(10),
-                        color: Colors.amberAccent,
-                        child: Text("Explore the best ways to travel around Sri Lanka"
-                          , style: TextStyle(
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                        child: Material(
+                          shadowColor: Colors.transparent,
+                          color: Colors.transparent,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.menu,
                               color: Colors.black,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold
-                          ),),
+                            ),
+                            onPressed: widget.onMenuPressed,
+                          ),
+                        ),
                       ),
-                      SizedBox(height: 10),
+                      Spacer(),
                       Container(
-                        padding: EdgeInsets.all(10),
-                        color: TEXT_BACKGROUND_COLOR,
-                        child: Text("Discover the ideal way to traverse Sri Lanka's enchanting landscapes. Embrace the scenic charm aboard iconic blue trains, unwind in budget-friendly buses, or relish personalized taxi journeys. For immersive experiences, opt for tuk-tuks or cycling through bustling streets. With diverse options that blend tradition and modernity, uncover the beauty and culture of Sri Lanka through its vibrant transportation modes."
-                          , style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 16
-                          ),),
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                                image: AssetImage(APP_AVATAR_PATH),
+                                fit: BoxFit.cover)),
                       ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: startDestinationController,
-                        decoration: customInputDecoration('Enter Start Destination :', size, null),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please Your Start Destination!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      TextFormField(
-                        controller: endDestinationController,
-                        decoration: customInputDecoration('Enter End Destination :', size, null),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Please Your End Destination!';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 20),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_formKey.currentState!.validate()) {
-                               findTourPeriod(size);
-                              }
-                            },
-                            child: Text('Find Preferred Travel Mode'),
-                            style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
-                          ),
-                          SizedBox(width: 10),
-                          ElevatedButton(
-                            onPressed: () {
-                              startDestinationController.clear();
-                            },
-                            child: Text('Clear'),
-                            style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
-                          ),
-                        ],
-                      ),
-
-                      // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 15)
                     ],
                   ),
+                  Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  APP_LOGO_COVER_PATH,
+                                  width: size.width * 0.90,
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            Text("TRAVELING MODE MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
+                            SizedBox(height: 25),
+                            Container(
+                              width: size.width,
+                              padding: EdgeInsets.all(10),
+                              color: Colors.amberAccent,
+                              child: Text("Explore the best ways to travel around Sri Lanka"
+                                , style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold
+                                ),),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              color: TEXT_BACKGROUND_COLOR,
+                              child: Text("Discover the ideal way to traverse Sri Lanka's enchanting landscapes. Embrace the scenic charm aboard iconic blue trains, unwind in budget-friendly buses, or relish personalized taxi journeys. For immersive experiences, opt for tuk-tuks or cycling through bustling streets. With diverse options that blend tradition and modernity, uncover the beauty and culture of Sri Lanka through its vibrant transportation modes."
+                                , style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16
+                                ),),
+                            ),
+                            SizedBox(height: 20),
+                            TextFormField(
+                              controller: startDestinationController,
+                              decoration: customInputDecoration('Enter Start Destination :', size, null),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please Your Start Destination!';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            TextFormField(
+                              controller: endDestinationController,
+                              decoration: customInputDecoration('Enter End Destination :', size, null),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please Your End Destination!';
+                                }
+                                return null;
+                              },
+                            ),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      findTourPeriod(size);
+                                    }
+                                  },
+                                  child: Text('Find Preferred Travel Mode'),
+                                  style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    startDestinationController.clear();
+                                  },
+                                  child: Text('Clear'),
+                                  style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
+                                ),
+                              ],
+                            ),
 
-                )
+                            // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
+                          ],
+                        ),
+
+                      )
+                  ),
+                ],
               ),
             ],
           ),

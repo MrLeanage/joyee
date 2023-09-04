@@ -95,8 +95,11 @@ class Dialogs{
         builder: (BuildContext context){
           return AlertDialog(
             title: Container(
+              decoration: BoxDecoration(
+                color: FIRST_THEME_COLOR,
+                borderRadius: BorderRadius.circular(10), // Set the desired border radius
+              ),
               padding: EdgeInsets.only(left: 20, right: 20, top: 5, bottom: 5),
-              color: TEXT_BACKGROUND_COLOR,
               child: Text(
                 title,
                 style: TextStyle(

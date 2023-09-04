@@ -69,6 +69,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: size.height*0.72,
                 width: 300,
                 padding: EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  image: DecorationImage(
+                    image: AssetImage(APP_BACKGROUND_2_PATH), // Replace with your background image path
+                    fit: BoxFit.fill,
+                  ),
+                ),
                 child: Form(
                   key: _formKey,
                   child: SingleChildScrollView(

@@ -79,121 +79,133 @@ class _Tour_Period_Home_State extends State<Tour_Period_Home> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return SafeArea(
-      child: ListView(
-        children: <Widget>[
-          Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.menu,
-                          color: Colors.black,
-                        ),
-                        onPressed: widget.onMenuPressed,
-                      ),
-                    ),
-                  ),
-                  Spacer(),
-                  Container(
-                    height: 40,
-                    width: 40,
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                            image: AssetImage(APP_AVATAR_PATH),
-                            fit: BoxFit.cover)),
-                  ),
-                  SizedBox(width: 15)
-                ],
+      child: Stack(
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage(APP_BACKGROUND_2_PATH), // Replace with your background image path
+                fit: BoxFit.cover,
               ),
-              Padding(
-                  padding: EdgeInsets.all(15),
-                  child: Form(
-                    key: _formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Row(
+            ),
+          ),
+          ListView(
+            children: <Widget>[
+              Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(32.0)),
+                        child: Material(
+                          shadowColor: Colors.transparent,
+                          color: Colors.transparent,
+                          child: IconButton(
+                            icon: Icon(
+                              Icons.menu,
+                              color: Colors.black,
+                            ),
+                            onPressed: widget.onMenuPressed,
+                          ),
+                        ),
+                      ),
+                      Spacer(),
+                      Container(
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            image: DecorationImage(
+                                image: AssetImage(APP_AVATAR_PATH),
+                                fit: BoxFit.cover)),
+                      ),
+                      SizedBox(width: 15)
+                    ],
+                  ),
+                  Padding(
+                      padding: EdgeInsets.all(15),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
-                            Image.asset(
-                              APP_LOGO_COVER_PATH,
-                              width: size.width * 0.90,
-                            )
-                          ],
-                        ),
-                        SizedBox(height: 30),
-                        Text("TOUR PERIOD MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
-                        SizedBox(height: 25),
-                        Container(
-                          width: size.width,
-                          padding: EdgeInsets.all(10),
-                          color: Colors.amberAccent,
-                          child: Text("Discover the perfect time to explore Sri Lanka "
-                            , style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16
-                            ),),
-                        ),
-                        SizedBox(height: 10),
-                        Container(
-                          padding: EdgeInsets.all(10),
-                          color: TEXT_BACKGROUND_COLOR,
-                          child: Text("Embark on an unforgettable journey to Sri Lanka! Our app helps you choose the perfect time to visit this tropical haven. Whether you're dreaming of sun-soaked beaches, lush landscapes, or vibrant festivals, we've got you covered. Explore the diverse attractions and activities this gem of an island offers, all tailored to the best times for your ultimate adventure."
-                            , style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 16
-                            ),),
-                        ),
-                        SizedBox(height: 20),
-                        TextFormField(
-                          controller: countryController,
-                          decoration: customInputDecoration('Enter Country :', size, null),
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              return 'Please enter country!';
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 20),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () {
-                                if (_formKey.currentState!.validate()) {
-                                  findTourPeriod(size);
+                            Row(
+                              children: <Widget>[
+                                Image.asset(
+                                  APP_LOGO_COVER_PATH,
+                                  width: size.width * 0.90,
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 30),
+                            Text("TOUR PERIOD MANAGER", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold, color: Colors.black)),
+                            SizedBox(height: 25),
+                            Container(
+                              width: size.width,
+                              padding: EdgeInsets.all(10),
+                              color: Colors.amberAccent,
+                              child: Text("Discover the perfect time to explore Sri Lanka "
+                                , style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16
+                                ),),
+                            ),
+                            SizedBox(height: 10),
+                            Container(
+                              padding: EdgeInsets.all(10),
+                              color: TEXT_BACKGROUND_COLOR,
+                              child: Text("Embark on an unforgettable journey to Sri Lanka! Our app helps you choose the perfect time to visit this tropical haven. Whether you're dreaming of sun-soaked beaches, lush landscapes, or vibrant festivals, we've got you covered. Explore the diverse attractions and activities this gem of an island offers, all tailored to the best times for your ultimate adventure."
+                                , style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16
+                                ),),
+                            ),
+                            SizedBox(height: 20),
+                            TextFormField(
+                              controller: countryController,
+                              decoration: customInputDecoration('Enter Country :', size, null),
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please enter country!';
                                 }
+                                return null;
                               },
-                              child: Text('Find Tour Period'),
-                              style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
                             ),
-                            SizedBox(width: 10),
-                            ElevatedButton(
-                              onPressed: () {
-                                countryController.clear();
-                              },
-                              child: Text('Clear'),
-                              style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
+                            SizedBox(height: 20),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    if (_formKey.currentState!.validate()) {
+                                      findTourPeriod(size);
+                                    }
+                                  },
+                                  child: Text('Find Tour Period'),
+                                  style: ElevatedButton.styleFrom(primary: COLOR_BLUE),
+                                ),
+                                SizedBox(width: 10),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    countryController.clear();
+                                  },
+                                  child: Text('Clear'),
+                                  style: ElevatedButton.styleFrom(primary: COLOR_YELLOW),
+                                ),
+                              ],
                             ),
+
+                            // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
                           ],
                         ),
 
-                        // Text("Stats", style: TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-
-                  )
+                      )
+                  ),
+                ],
               ),
             ],
           ),
-        ],
+        ]
       ),
     );
   }

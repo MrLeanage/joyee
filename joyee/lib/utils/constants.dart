@@ -8,15 +8,17 @@ const COLOR_GREY = Color.fromRGBO(73,72,68,1);
 const COLOR_LIGHT_GREY = Colors.grey;
 const COLOR_WHITE = Color.fromRGBO(255,255,255,1);
 const COLOR_RED = Color.fromRGBO(255,0,0,1);
-const THEME_COLOR = Color.fromRGBO(1, 163, 186, 1.0);
+const THEME_COLOR = Color.fromRGBO(14, 96, 154, 1.0);
 const COLOR_BACKGROUND =  Color.fromRGBO(255,255,255,1);
 const COLOR_LIGHT_GREEN = Colors.green;
 const COLOR_BROWN_LIGHT1 = Color.fromRGBO(147, 29, 3, 1);
 const COLOR_BACKGROUND_LIGHT =  Color.fromRGBO(203,147,18,1);
 const TEXT_BACKGROUND_COLOR = Color.fromRGBO(196, 247, 254, 1);
+const FIRST_THEME_COLOR = Color.fromRGBO(255, 188, 7, 1);
 
 
 const APP_BACKGROUND_PATH = "assets/app/background.jpg";
+const APP_BACKGROUND_2_PATH = "assets/app/background-2.jpg";
 const APP_ICON_PATH = "assets/app/icon.png";
 const APP_LOGO_COVER_PATH = "assets/app/logo-cover.png";
 const APP_AVATAR_PATH = "assets/app/avatar.png";
@@ -29,6 +31,11 @@ const APP_ASK_OBSERVATION_COVER = "assets/app/ask-observation-cover.png";
 const APP_ASK_HABIT_COVER = "assets/app/ask-habit-cover.jpg";
 const APP_CAPTURE_IMAGES_COVER = "assets/app/capture-images-cover.jpg";
 const APP_DIAGNOSIS_REPORT_COVER = "assets/app/diagnosis-report-cover.jpg";
+
+const TOUR_PERIOD_IMAGE = "assets/app/tour_period_analyzer.png";
+const CUISINE_DISCOVERY_IMAGE = "assets/app/regional_cuisine.png";
+const TRAVEL_MODE_IMAGE = "assets/app/travel_mode.png";
+const USER_EXPERIENCE_IMAGE = "assets/app/feedback_manager.png";
 
 const APP_NAME = "JOYEE";
 const APP_SLOGAN = "";
